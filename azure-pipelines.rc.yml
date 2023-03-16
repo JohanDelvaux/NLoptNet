@@ -56,21 +56,21 @@ stages:
       displayName: 'Publish Artifact: $(artifactNugetName)'
       artifact: '$(artifactNugetName)'
 
-  - stage: PublishNuget
-    dependsOn:
-    - Build
-    condition: succeeded()
-    displayName: "Publish Nuget Packages"
-    jobs:
-    - job: PublishNuget
-      steps:
-      - download: current
-        artifact: '$(ArtifactNugetName)'
-        displayName: 'Download nuget packages'
+- stage: PublishNuget
+  dependsOn:
+  - Build
+  condition: succeeded()
+  displayName: "Publish Nuget Packages"
+  jobs:
+  - job: PublishNuget
+    steps:
+    - download: current
+      artifact: '$(ArtifactNugetName)'
+      displayName: 'Download nuget packages'
 
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'push'
-          packagesToPush: '$(Agent.BuildDirectory)/$(ArtifactNugetName)/*.nupkg'
-          nuGetFeedType: 'internal'
-          publishVstsFeed: '368fd3b5-1cec-432d-937d-f006ee177508/28f11f8b-4d6c-4db4-808d-da3a2097c093'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Agent.BuildDirectory)/$(ArtifactNugetName)/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '368fd3b5-1cec-432d-937d-f006ee177508/28f11f8b-4d6c-4db4-808d-da3a2097c093'
