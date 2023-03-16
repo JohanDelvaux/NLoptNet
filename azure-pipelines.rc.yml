@@ -47,9 +47,9 @@ steps:
     custom: 'pack'
     arguments: '--configuration $(buildConfiguration) -o $(build.artifactStagingDirectory)  --version-suffix $(versionSuffix)'
 
-- publish: '$(build.artifactStagingDirectory)'
-  displayName: 'Publish Artifact: $(artifactNugetName)'
-  artifact: '$(artifactNugetName)'
+# - publish: '$(build.artifactStagingDirectory)'
+#   displayName: 'Publish Artifact: $(artifactNugetName)'
+#   artifact: '$(artifactNugetName)'
 
 - task: DotNetCoreCLI@2
   inputs:
