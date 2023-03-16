@@ -32,7 +32,7 @@ steps:
   displayName: 'Running tests'
   inputs:
     command: 'test'
-    projects: '**/*Tests/*Tests.csproj'
+    projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration)'
     publishTestResults: true
 
