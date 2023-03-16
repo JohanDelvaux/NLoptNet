@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  tags:
+    include:
+    - rc-*
 
 pool:
   vmImage: 'windows-latest'
@@ -14,6 +16,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   artifactNugetName: 'KMA.Offboard.NLoptNET'
+  versionSuffix: '$(Build.SourceBranchName)'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -28,17 +31,31 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  displayName: 'Running tests'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'test'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'
+    publishTestResults: true
 
 - task: DotNetCoreCLI@2
+  displayName: 'Creating nuget packages'
+  condition: succeeded()
   inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'
-    versioningScheme: 'off'
+    command: 'custom'
+    custom: 'pack'
+    arguments: '--configuration $(buildConfiguration) -o $(build.artifactStagingDirectory)  --version-suffix $(versionSuffix)'
 
 - publish: '$(build.artifactStagingDirectory)'
   displayName: 'Publish Artifact: $(artifactNugetName)'
   artifact: '$(artifactNugetName)'
+
+# - task: DotNetCoreCLI@2
+#   condition: succeeded()
+#   inputs:
+#     command: 'push'
+#     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+#     nuGetFeedType: 'internal'
+#     publishVstsFeed: '368fd3b5-1cec-432d-937d-f006ee177508/28f11f8b-4d6c-4db4-808d-da3a2097c093'
+
