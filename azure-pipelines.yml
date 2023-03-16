@@ -28,10 +28,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  displayName: 'Running tests'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'test'
+    projects: '**/*Tests/*Tests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    publishTestResults: true
 
 - task: DotNetCoreCLI@2
   inputs:
