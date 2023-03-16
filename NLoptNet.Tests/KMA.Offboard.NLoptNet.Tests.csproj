@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NLoptNet\NLoptNet.csproj" />
+    <ProjectReference Include="..\NLoptNet\KMA.Offboard.NLoptNet.csproj" />
   </ItemGroup>
 
 </Project>

@@ -62,9 +62,6 @@
 		<None Include="runtimes\win-x86\native\nlopt.lib" Pack="true" PackagePath="runtimes/win-x86/native/nlopt.lib">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="NLoptNet.targets" Pack="true" PackagePath="build/net47">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 </Project>
