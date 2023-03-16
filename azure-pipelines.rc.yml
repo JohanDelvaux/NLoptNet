@@ -47,15 +47,14 @@ steps:
     custom: 'pack'
     arguments: '--configuration $(buildConfiguration) -o $(build.artifactStagingDirectory)  --version-suffix $(versionSuffix)'
 
-- publish: '$(build.artifactStagingDirectory)'
-  displayName: 'Publish Artifact: $(artifactNugetName)'
-  artifact: '$(artifactNugetName)'
+# - publish: '$(build.artifactStagingDirectory)'
+#   displayName: 'Publish Artifact: $(artifactNugetName)'
+#   artifact: '$(artifactNugetName)'
 
-# - task: DotNetCoreCLI@2
-#   condition: succeeded()
-#   inputs:
-#     command: 'push'
-#     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-#     nuGetFeedType: 'internal'
-#     publishVstsFeed: '368fd3b5-1cec-432d-937d-f006ee177508/28f11f8b-4d6c-4db4-808d-da3a2097c093'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(build.artifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '368fd3b5-1cec-432d-937d-f006ee177508/28f11f8b-4d6c-4db4-808d-da3a2097c093'
 
