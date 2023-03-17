@@ -68,7 +68,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'pack'
-    arguments: '--configuration ${{parameters.buildConfiguration}} -o $(build.artifactStagingDirectory) {{parameters.buildFlags}}'
+    arguments: '--configuration ${{parameters.buildConfiguration}} -o $(build.artifactStagingDirectory) ${{parameters.buildFlags}}'
 
 - publish: '$(build.artifactStagingDirectory)'
   displayName: 'Publish Artifact: ${{parameters.artifactName}}'
