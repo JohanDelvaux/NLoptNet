@@ -4,21 +4,21 @@
 		<RuntimeIdentifiers>linux-arm64;linux-musl-x64;linux-x64;win-x64;win-x86</RuntimeIdentifiers>
 		<TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
 		<RootNamespace>NLoptNet</RootNamespace>
-		<VersionPrefix>1.4.3</VersionPrefix>
+		<VersionPrefix>2.0.0</VersionPrefix>
 		<Platforms>AnyCPU;x86</Platforms>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageOutputPath>../pack</PackageOutputPath>
 		<PlatformTarget>$(Platform)</PlatformTarget>
 		<OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-		<Authors>Brannon King</Authors>
+		<Authors></Authors>
 		<PackageTags>NLopt NLoptNet Optimization Minimization Simplex Stogo Cobyla BFGS</PackageTags>
-		<PackageReleaseNotes>Fixed size of gradient array in callback</PackageReleaseNotes>
+		<PackageReleaseNotes>See ChangeLog.md</PackageReleaseNotes>
 		<RepositoryUrl>https://github.com/BrannonKing/NLoptNet</RepositoryUrl>
-		<AssemblyVersion>1.4.3</AssemblyVersion>
-		<FileVersion>1.4.3</FileVersion>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
 		<Title>NLoptNet</Title>
-		<Description>This is a wrapper around the NLopt library. NLopt binaries are included.</Description>
+		<Description>This is a wrapper around the NLopt library. NLopt binaries are included. This is a fork of Brannon King's NLoptNet Nuget package</Description>
 		<Copyright>2022</Copyright>
 	</PropertyGroup>
 
