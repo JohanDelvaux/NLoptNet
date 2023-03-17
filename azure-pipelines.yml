@@ -16,32 +16,9 @@ variables:
   artifactNugetName: 'KMA.Offboard.NLoptNET'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Running tests'
-  inputs:
-    command: 'test'
-    projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration)'
-    publishTestResults: true
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'
-    versioningScheme: 'off'
-
-- publish: '$(build.artifactStagingDirectory)'
-  displayName: 'Publish Artifact: $(artifactNugetName)'
-  artifact: '$(artifactNugetName)'
+- template: pipeline_templates/generate_artifacts.yml
+  parameters:
+    buildPlatform: $(buildPlatform)
+    buildConfiguration: $(buildConfiguration)
+    solution: $(solution)
+    artifactName: $(artifactNugetName)

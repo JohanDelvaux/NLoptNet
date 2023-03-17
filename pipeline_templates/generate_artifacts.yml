@@ -1,0 +1,76 @@
+parameters:
+- name: 'buildPlatform'
+  type: string
+  default: ''
+- name: 'buildConfiguration'
+  type: string
+  default: ''
+- name: 'buildFlags'
+  type: string
+  default: ''
+- name: 'solution'
+  type: string
+  default: ''
+- name: 'artifactName'
+  type: string
+  default: ''
+
+steps:
+- bash: |
+    if [ -z "$BUILD_PLATFORM" ]; then
+      echo "##vso[task.logissue type=error;]Missing template parameter \"buildPlatform\""
+      echo "##vso[task.complete result=Failed;]"
+    fi
+
+    if [ -z "$BUILD_CONFIGURATION" ]; then
+      echo "##vso[task.logissue type=error;]Missing template parameter \"buildConfiguration\""
+      echo "##vso[task.complete result=Failed;]"
+    fi
+
+    if [ -z "$SOLUTION" ]; then
+      echo "##vso[task.logissue type=error;]Missing template parameter \"solution\""
+      echo "##vso[task.complete result=Failed;]"
+    fi
+
+    if [ -z "$ARTIFACT_NAME" ]; then
+      echo "##vso[task.logissue type=error;]Missing template parameter \"artifactName\""
+      echo "##vso[task.complete result=Failed;]"
+    fi
+  env:
+    BUILD_PLATFORM: ${{parameters.buildPlatform}}
+    BUILD_CONFIGURATION: ${{parameters.buildConfiguration}}
+    SOLUTION: ${{parameters.solution}}
+    ARTIFACT_NAME: ${{parameters.artifactName}}
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '${{parameters.solution}}'
+
+- task: VSBuild@1
+  inputs:
+    solution: '${{parameters.solution}}'
+    platform: '${{parmeters.buildPlatform}}'
+    configuration: '${{parameters.buildConfiguration}}'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Running tests'
+  inputs:
+    command: 'test'
+    projects: '${{parameters.solution}}'
+    arguments: '--configuration ${{parameters.buildConfiguration}}'
+    publishTestResults: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Creating nuget packages'
+  condition: succeeded()
+  inputs:
+    command: 'custom'
+    custom: 'pack'
+    arguments: '--configuration ${{parameters.buildConfiguration}} -o $(build.artifactStagingDirectory) {{parameters.buildFlags}}'
+
+- publish: '$(build.artifactStagingDirectory)'
+  displayName: 'Publish Artifact: ${{parameters.artifactName}}'
+  artifact: '${{parameters.artifactName}}'
+  
