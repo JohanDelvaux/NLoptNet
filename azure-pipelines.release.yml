@@ -34,14 +34,14 @@ stages:
         solution: $(solution)
         artifactName: $(artifactNugetName)
 
-- stage: PublishNuget
-  dependsOn:
-  - Build
-  condition: succeeded()
-  displayName: "Publish Nuget Packages"
-  jobs:
-  - job: PublishNuget
-    steps:
-    - template: pipeline_templates/publish_artifacts.yml
-      parameters:
-        artifactName: $(artifactNugetName)
+# - stage: PublishNuget
+#   dependsOn:
+#   - Build
+#   condition: succeeded()
+#   displayName: "Publish Nuget Packages"
+#   jobs:
+#   - job: PublishNuget
+#     steps:
+#     - template: pipeline_templates/publish_artifacts.yml
+#       parameters:
+#         artifactName: $(artifactNugetName)
