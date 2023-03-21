@@ -24,7 +24,7 @@ stages:
   jobs:
   - job: Build
     steps:
-    - template: pipeline_template/extract_version_info.yml
+    - template: pipeline_templates/extract_version_info.yml
     
     - template: pipeline_templates/generate_artifacts.yml
       parameters:
