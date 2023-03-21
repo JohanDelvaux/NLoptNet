@@ -1,0 +1,18 @@
+steps:
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $VERSION_PREFIX = (Select-Xml -Path NLOptNet\KMA.Offboard.NLoptNet.csproj -XPath "/Project/PropertyGroup/VersionPrefix" | Select-Object -ExpandProperty Node).InnerText
+      Write-Host "##vso[task.setvariable variable=versionPrefix;]$VERSION_PREFIX"
+
+- bash: |
+    if [ -z "$VERSION_SUFFIX" ]; then
+      echo "##vso[task.setvariable variable=version;]$VERSION_PREFIX+$BUILD_NUMBER"
+    else
+      echo "##vso[task.setvariable variable=version;]$VERSION_PREFIX-$VERSION_SUFFIX"
+    fi
+  env:
+    VERSION_PREFIX: $(versionPrefix)
+    VERSION_SUFFIX: $(versionSuffix)
+    BUILD_NUMBER: $(Build.BuildNumber)
