@@ -53,7 +53,7 @@
 		private static extern NloptResult nlopt_set_local_optimizer(IntPtr opt, IntPtr local);
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
-		private static extern void nlopt_set_maxeval(IntPtr opt, int maxeval);
+		private static extern NloptResult nlopt_set_maxeval(IntPtr opt, int maxeval);
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_force_stop(IntPtr opt);
@@ -63,6 +63,7 @@
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_initial_step1(IntPtr opt, double dx);
+
 
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_set_ftol_rel(IntPtr opt, double tol);
@@ -88,8 +89,15 @@
 		[DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_get_xtol_abs(IntPtr opt, out double[] tol);
 
-		#endif
-		
-		#endregion
+
+        [DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_set_stopval(IntPtr opt, double stopval);
+
+        [DllImport("nlopt", CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_set_maxtime(IntPtr opt, double maxtime);
+
+        #endif
+
+        #endregion
     }
 }
