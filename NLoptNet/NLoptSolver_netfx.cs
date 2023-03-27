@@ -12,9 +12,9 @@ namespace NLoptNet
 		private const string NLopt32 = "nlopt_x32.dll";
 		private const string NLopt64 = "nlopt_x64.dll";
 
-		#region Imported NLOpt functions - .NET Framework
-		
-		#if NETFRAMEWORK
+        #region Imported NLOpt functions - .NET Framework
+
+#if NETFRAMEWORK
 		
 		[DllImport(NLopt64, EntryPoint = nameof(nlopt_version), CallingConvention = CallingConvention.Cdecl)]
 		private static extern void nlopt_version64(out int major, out int minor, out int bugfix);
@@ -177,21 +177,14 @@ namespace NLoptNet
 			=> Is64Bit ? nlopt_set_local_optimizer64(opt, local) : nlopt_set_local_optimizer32(opt, local);
 
 		[DllImport(NLopt64, EntryPoint = nameof(nlopt_set_maxeval), CallingConvention = CallingConvention.Cdecl)]
-		private static extern void nlopt_set_maxeval64(IntPtr opt, int maxeval);
+		private static extern NloptResult nlopt_set_maxeval64(IntPtr opt, int maxeval);
 
 		[DllImport(NLopt32, EntryPoint = nameof(nlopt_set_maxeval), CallingConvention = CallingConvention.Cdecl)]
-		private static extern void nlopt_set_maxeval32(IntPtr opt, int maxeval);
+		private static extern NloptResult nlopt_set_maxeval32(IntPtr opt, int maxeval);
 
-		private static void nlopt_set_maxeval(IntPtr opt, int maxeval)
-		{
-			if (Is64Bit)
-			{
-				nlopt_set_maxeval64(opt, maxeval);
-				return;
-			}
+		private static NloptResult nlopt_set_maxeval(IntPtr opt, int maxeval)
+			=> Is64Bit ? nlopt_set_maxeval64(opt, maxeval) : nlopt_set_maxeval32(opt, maxeval);
 
-			nlopt_set_maxeval32(opt, maxeval);
-		}
 		
 		[DllImport(NLopt64, EntryPoint = nameof(nlopt_force_stop), CallingConvention = CallingConvention.Cdecl)]
 		private static extern NloptResult nlopt_force_stop64(IntPtr opt);
@@ -243,14 +236,16 @@ namespace NLoptNet
 	    private static NloptResult nlopt_set_xtol_abs1(IntPtr opt, double tol)
 		    => Is64Bit ? nlopt_set_xtol_abs164(opt, tol) : nlopt_set_xtol_abs132(opt, tol);
 
+
 	    [DllImport(NLopt64, EntryPoint = nameof(nlopt_set_xtol_abs), CallingConvention = CallingConvention.Cdecl)]
-        private static extern NloptResult nlopt_set_xtol_abs64(IntPtr opt, double tol);
+        private static extern NloptResult nlopt_set_xtol_abs64(IntPtr opt, double[] tol);
 
         [DllImport(NLopt32, EntryPoint = nameof(nlopt_set_xtol_abs), CallingConvention = CallingConvention.Cdecl)]
-        private static extern NloptResult nlopt_set_xtol_abs32(IntPtr opt, double tol);
+        private static extern NloptResult nlopt_set_xtol_abs32(IntPtr opt, double[] tol);
 
-        private static NloptResult nlopt_set_xtol_abs(IntPtr opt, double tol)
+        private static NloptResult nlopt_set_xtol_abs(IntPtr opt, double[] tol)
 	        => Is64Bit ? nlopt_set_xtol_abs64(opt, tol) : nlopt_set_xtol_abs32(opt, tol);
+
 
         [DllImport(NLopt64, EntryPoint = nameof(nlopt_get_ftol_rel), CallingConvention = CallingConvention.Cdecl)]
 		private static extern double nlopt_get_ftol_rel64(IntPtr opt);
@@ -288,8 +283,28 @@ namespace NLoptNet
         private static double nlopt_get_xtol_abs(IntPtr opt)
 	        => Is64Bit ? nlopt_get_xtol_abs64(opt) : nlopt_get_xtol_abs32(opt);
 
-        #endif
-        
+
+        private static NloptResult nlopt_set_stopval(IntPtr opt, double stopval)
+    => Is64Bit ? nlopt_set_stopval64(opt, stopval) : nlopt_set_stopval32(opt, stopval);
+
+        [DllImport(NLopt32, EntryPoint = nameof(nlopt_set_stopval), CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_set_stopval32(IntPtr opt, double stopval);
+
+        [DllImport(NLopt64, EntryPoint = nameof(nlopt_set_stopval), CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_set_stopval64(IntPtr opt, double stopval);
+
+
+        private static NloptResult nlopt_set_maxtime(IntPtr opt, double maxtime)
+    => Is64Bit ? nlopt_set_maxtime64(opt, maxtime) : nlopt_set_maxtime32(opt, maxtime);
+
+        [DllImport(NLopt32, EntryPoint = nameof(nlopt_set_maxtime), CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_set_maxtime32(IntPtr opt, double maxtime);
+
+        [DllImport(NLopt64, EntryPoint = nameof(nlopt_set_maxtime), CallingConvention = CallingConvention.Cdecl)]
+        private static extern NloptResult nlopt_set_maxtime64(IntPtr opt, double maxtime);
+
+#endif
+
         #endregion
-	}
+    }
 }
